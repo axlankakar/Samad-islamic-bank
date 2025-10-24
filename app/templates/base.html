@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Samad Islamic Banking{% endblock %} - Banking System</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Styles -->
+    <style>
+        :root {
+            --islamic-green: #00913f;
+            --islamic-gold: #c5a572;
+        }
+
+        /* Button Loading States */
+        .btn {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .btn.loading {
+            padding-right: 35px;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .btn.loading:after {
+            content: '';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            width: 15px;
+            height: 15px;
+            margin-top: -7px;
+            border: 2px solid;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: button-loading-spinner 0.7s linear infinite;
+        }
+
+        @keyframes button-loading-spinner {
+            from {
+                transform: rotate(0turn);
+            }
+            to {
+                transform: rotate(1turn);
+            }
+        }
+
+        /* Form Feedback */
+        .form-feedback {
+            display: none;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .form-feedback.show {
+            display: block;
+        }
+
+        /* Card Animations */
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .slide-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background: linear-gradient(135deg, var(--islamic-green), #006b52) !important;
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: 600;
+        }
+
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            margin: 0 0.2rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            cursor: pointer !important;
+            pointer-events: auto !important;
+            z-index: 1000 !important;
+            position: relative !important;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--islamic-gold) !important;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .navbar-nav .nav-item.active .nav-link {
+            color: var(--islamic-gold) !important;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .navbar-toggler {
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(255, 255, 255, 0.9)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+         @media (max-width: 991.98px) {
+             .navbar-nav .nav-link {
+                 padding: 0.75rem 1rem;
+                 margin: 0.2rem 0;
+             }
+         }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('admin.about') }}">
+                <i class="fas fa-mosque mr-2"></i>Samad Islamic Banking
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item {% if request.endpoint == 'admin.about' %}active{% endif %}">
+                        <a class="nav-link" href="{{ url_for('admin.about') }}">
+                            <i class="fas fa-info-circle mr-1"></i>About Us
+                        </a>
+                    </li>
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item {% if request.endpoint == 'admin.dashboard' %}active{% endif %}">
+                            <a class="nav-link" href="{{ url_for('admin.dashboard') }}">
+                                <i class="fas fa-home mr-1"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item {% if request.endpoint == 'admin.view_balances' %}active{% endif %}">
+                            <a class="nav-link" href="{{ url_for('admin.view_balances') }}">
+                                <i class="fas fa-wallet mr-1"></i>Balances
+                            </a>
+                        </li>
+                        <li class="nav-item {% if request.endpoint == 'admin.manage_users' %}active{% endif %}">
+                            <a class="nav-link" href="{{ url_for('admin.manage_users') }}">
+                                <i class="fas fa-users mr-1"></i>Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('auth.logout') }}">
+                                <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item {% if request.endpoint == 'auth.login' %}active{% endif %}">
+                            <a class="nav-link" href="{{ url_for('auth.login') }}">
+                                <i class="fas fa-sign-in-alt mr-1"></i>Login
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container fade-in">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {% if category == 'success' %}
+                            <i class="fas fa-check-circle mr-2"></i>
+                        {% elif category == 'danger' %}
+                            <i class="fas fa-exclamation-circle mr-2"></i>
+                        {% elif category == 'warning' %}
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                        {% else %}
+                            <i class="fas fa-info-circle mr-2"></i>
+                        {% endif %}
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle form submissions
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    const submitButton = form.querySelector('button[type="submit"]');
+                    if (submitButton && !submitButton.classList.contains('no-loading')) {
+                        // Show loading state
+                        submitButton.classList.add('loading');
+                        submitButton.disabled = true;
+
+                        // Add feedback element if not exists
+                        let feedback = form.querySelector('.form-feedback');
+                        if (!feedback) {
+                            feedback = document.createElement('div');
+                            feedback.className = 'form-feedback';
+                            form.appendChild(feedback);
+                        }
+                    }
+                });
+            });
+
+            // Handle action buttons (non-form) - Exclude all navigation and links
+            const actionButtons = document.querySelectorAll('button.btn:not([type="submit"])');
+            actionButtons.forEach(button => {
+                if (!button.classList.contains('no-loading')) {
+                    button.addEventListener('click', function(e) {
+                        // Don't add loading state for dropdown toggles
+                        if (this.getAttribute('data-toggle') === 'dropdown') return;
+
+                        this.classList.add('loading');
+                        this.disabled = true;
+
+                        // Re-enable button after 10 seconds (failsafe)
+                        setTimeout(() => {
+                            this.classList.remove('loading');
+                            this.disabled = false;
+                        }, 10000);
+                    });
+                }
+            });
+
+            // Add slide-in animation to cards
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.classList.add('slide-in');
+            });
+            
+             // Debug navigation links
+             const navLinks = document.querySelectorAll('.nav-link');
+             navLinks.forEach(link => {
+                 link.addEventListener('click', function(e) {
+                     console.log('Navigation link clicked:', this.href);
+                     // Force navigation if href exists
+                     if (this.href && this.href !== '#' && !this.href.includes('javascript:')) {
+                         window.location.href = this.href;
+                     }
+                 });
+             });
+
+             // Removed automatic welcome modal display
+             // Users can now access the About page via the navigation menu
+        });
+    </script>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html> 

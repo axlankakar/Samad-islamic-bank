@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Distribute Profits{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Profit Distribution</h2>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            Current System Status
+        </div>
+        <div class="card-body">
+            <p>
+                Total System Balance (Sum of all user balances): 
+                <strong>{{ "%.2f"|format(total_system_balance if total_system_balance is not none else 0) }}</strong>
+            </p>
+            {% if total_system_balance <= 0 %}
+                <div class="alert alert-warning" role="alert">
+                    <strong>Warning:</strong> The total system balance is zero or less. Profit distribution is disabled.
+                </div>
+            {% else %}
+                <div class="alert alert-success" role="alert">
+                    The total system balance is positive. You can proceed with profit distribution based on user balances.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            Distribute New Profit
+        </div>
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('admin.distribute_profit') }}">
+                <div class="form-group">
+                    <label for="total_profit">Total Profit Amount Available</label>
+                    <input type="number" step="0.01" class="form-control" id="total_profit" name="total_profit" placeholder="Enter total profit amount" required 
+                           {% if total_system_balance <= 0 %}disabled{% endif %}>
+                    <small class="form-text text-muted">This is the total profit amount available for distribution.</small>
+                </div>
+                <div class="form-group">
+                    <label for="distribution_percentage">Percentage to Distribute (%)</label>
+                    <input type="number" step="0.01" min="0" max="100" class="form-control" id="distribution_percentage" name="distribution_percentage" placeholder="Enter percentage (e.g., 10, 15, 20)" required 
+                           {% if total_system_balance <= 0 %}disabled{% endif %}>
+                    <small class="form-text text-muted">Enter the percentage of total profit you want to distribute (0-100%).</small>
+                </div>
+                <div class="alert alert-info" role="alert">
+                    <strong>Example:</strong> If you enter total profit of 1000 and percentage of 15%, then 150 will be distributed among users based on their balance shares.
+                </div>
+                <button type="submit" class="btn btn-primary" {% if total_system_balance <= 0 %}disabled{% endif %}>
+                    Distribute Profit
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Optional: Link to manage users if admin needs to adjust balances directly, though this is usually done via operations -->
+    <!-- <div class="mt-4">
+        <a href="{{ url_for('admin.manage_users') }}" class="btn btn-secondary">Manage Users</a>
+    </div> -->
+</div>
+{% endblock %} 

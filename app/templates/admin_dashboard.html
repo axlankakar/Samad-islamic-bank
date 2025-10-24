@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Samad Islamic Banking - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="jumbotron islamic-pattern">
+    <h1 class="display-4">
+        <i class="fas fa-mosque mr-3"></i>Welcome to Samad Islamic Banking
+    </h1>
+    <p class="lead">Manage your Shariah-compliant banking system with modern tools and features.</p>
+    <hr class="my-4">
+    <p>Efficiently handle user accounts, profit sharing, and transactions in accordance with Islamic principles.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <div class="card dashboard-card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-users mr-2 text-primary"></i>User Management
+                </h5>
+                <p class="card-text">Manage account holders and their financial profiles in compliance with Islamic banking principles.</p>
+                <a href="{{ url_for('admin.manage_users') }}" class="btn btn-primary">
+                    <i class="fas fa-user-cog mr-2"></i>Manage Users
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card dashboard-card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-percentage mr-2 text-success"></i>Profit Distribution
+                </h5>
+                <p class="card-text">Distribute profits among account holders based on Islamic profit-sharing principles.</p>
+                <a href="{{ url_for('admin.distribute_profit') }}" class="btn btn-success">
+                    <i class="fas fa-money-bill-wave mr-2"></i>Distribute Profits
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card dashboard-card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-exchange-alt mr-2 text-info"></i>Account Operations
+                </h5>
+                <p class="card-text">Process Shariah-compliant transactions and manage account operations.</p>
+                <a href="{{ url_for('admin.account_operations') }}" class="btn btn-info">
+                    <i class="fas fa-cash-register mr-2"></i>Perform Operations
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <div class="card dashboard-card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-wallet mr-2 text-warning"></i>Account Balances
+                </h5>
+                <p class="card-text">Monitor and manage account balances of all participants in the system.</p>
+                <a href="{{ url_for('admin.view_balances') }}" class="btn btn-warning text-dark">
+                    <i class="fas fa-search-dollar mr-2"></i>View Balances
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <div class="card dashboard-card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-history mr-2 text-secondary"></i>Transaction History
+                </h5>
+                <p class="card-text">Review and track all financial transactions and system activities.</p>
+                <a href="{{ url_for('admin.view_transactions') }}" class="btn btn-secondary">
+                    <i class="fas fa-list-alt mr-2"></i>View History
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card islamic-pattern">
+            <div class="card-body text-center">
+                <h5 class="card-title">
+                    <i class="fas fa-star-and-crescent mr-2 text-warning"></i>Islamic Banking Principles
+                </h5>
+                <p class="card-text">
+                    Our system adheres to Shariah principles, ensuring ethical and interest-free banking operations.
+                    All transactions and profit distributions are conducted in accordance with Islamic finance guidelines.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
